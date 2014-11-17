@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+  <meta charset="utf-8">
+  <title>modal-simple</title>
+
+<style>
+/* Created by Olga Maraeva http://codezona.com/ */
+
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600);
+
+html {
+    color: #2a2a2a;
+    background: #FFE0F3;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans';
+    overflow-x: hidden;
+}
+
+h1 {
+    color: #888;
+    text-align: center;
+    font-weight: 300;
+    font-size: 2em;
+}
+
+a:active {
+    border: none;
+}
+
+p {
+    margin: 0.5em 0;
+}
+
+div:hover {
+    cursor: pointer;
+}
+
+ul.gallery {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    text-align: center;
+    margin: 0 auto;
+    background: rgba(220, 220, 221, 0.89);
+    padding: 10px 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.btnModal-left {
+    position: absolute;
+    z-index: 999;
+    height: 33px;
+    width: 36px;
+    overflow: hidden;
+    left: 0!important;
+    opacity: 0;
+   background-image: url('http://luckyframe74.com/demo/carusel/img/left-button.png');
+	background-repeat:no-repeat;
+    filter: alpha(opacity=00);
+    -moz-transition: opacity 1s ease-out;
+    -o-transition: opacity 1s ease-out;
+    -webkit-transition: opacity 1s ease-out;
+    transition: opacity 1s ease-out;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+}
+
+.btnModal-right {
+    position: absolute;
+    z-index: 999;
+    height: 33px;
+    width: 36px;
+    overflow: hidden;
+    right: 0!important;
+     background-image: url('http://luckyframe74.com/demo/carusel/img/right-button.png');
+	background-repeat:no-repeat;
+    opacity: 0;
+    filter: alpha(opacity=00);
+    -moz-transition: opacity 1s ease-out;
+    -o-transition: opacity 1s ease-out;
+    -webkit-transition: opacity 1s ease-out;
+    transition: opacity 1s ease-out;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+}
+
+.btnModal-show {
+    opacity: 1;
+}
+
+.btnModal-left img, .btnModal-right img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+}
+
+.imageDisplay {
+    position: absolute;
+    z-index: 999;
+    height: auto;
+    width: 100%;
+    overflow: hidden;
+    display: block;
+    top: 40%;
+    height: 61px;
+}
+
+.imageDisplay-wrapper {
+    position: relative;
+    display: block;
+    width: auto;
+    height: auto;
+}
+
+.imageDisplay div {
+    position: absolute;
+    z-index: 999;
+    width: 100%;
+    height: 33px;
+    width: 36px;
+    overflow: hidden;
+    border: none!important;
+    outline: none!important;
+}
+
+.gallery li {
+    display: inline-block;
+    float: none!important;
+    width: 30.2%!important;
+    position: relative;
+    max-width: 151px;
+    max-height: 100px;
+    height: auto;
+    overflow: hidden;
+}
+
+.gallery li img {
+    display: block;
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100px;
+    height: auto;
+    overflow: hidden;
+}
+
+#modal-background {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    opacity: .80;
+    -webkit-opacity: .8;
+    -moz-opacity: .8;
+    filter: alpha(opacity=80);
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    box-shadow: 0 0 20px 0 #222;
+    -webkit-box-shadow: 0 0 20px 0 #222;
+    -moz-box-shadow: 0 0 20px 0 #222;
+    display: none;
+    padding: 10px 10px 20px 10px;
+    position: fixed;
+    z-index: 1000;
+    height: auto;
+    min-width: 50px;
+    max-width: 600px;
+}
+
+.modal-content img {
+    display: block;
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+}
+
+.modal-close {
+    position: absolute;
+    z-index: 9999;
+    right: 15px;
+    top: 15px;
+    width: 20px;
+    height: 20px;
+    display: block;
+    background-image: url('http://luckyframe74.com/demo/carusel/img/close-nice.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    -moz-background-size: cover;
+    overflow: hidden;
+    opacity: 1;
+}
+
+#modal-background.active, .modal-content.active, .image-title.active {
+    display: block;
+}
+
+
+
+
+</style>
+</head>
+<body>
+  		
+		<h1>Responsive img gallery with modal</h1>
+	
+    
+
+<div id="content">
+   <div id="modal-background"></div>
+   <div class="modal-content">
+      <div class="modal-close"></div>
+      <div class="imageDisplay-wrapper">
+         <div class="imageDisplay">
+            <div class="btnModal-left"></div>
+            <!--end btnLeft-->
+            <div class="btnModal-right"></div>
+            <!--end btnRight-->        
+         </div>
+         <img src="https://www.mercedes-amg.com/img/home/home_13.jpg">
+      </div>
+   </div>
+   <!--.modal-content-->
+   <ul class="gallery">
+      <li><img src="https://www.mercedes-amg.com/img/home/home_13.jpg" alt=""></li>
+      <li><img src="https://www.mercedes-amg.com/img/home/home_14.jpg" alt=""></li>
+      <li><img src="https://www.mercedes-amg.com/img/home/home_2.jpg" alt=""></li>
+      <li><img src="https://www.mercedes-amg.com/img/home/home_4.jpg" alt=""></li>
+      <li><img src="https://www.mercedes-amg.com/img/home/home_5.jpg" alt=""></li>
+      <li><img src="https://www.mercedes-amg.com/img/home/home_6.jpg" alt=""></li>
+      <li><img src="https://www.mercedes-amg.com/img/home/home_7.jpg" alt=""></li>
+      <li><img src="https://www.mercedes-amg.com/img/home/home_8.jpg" alt=""></li>
+      <li><img src="https://www.mercedes-amg.com/img/home/home_9.jpg" alt=""></li>
+   </ul>
+</div>
+<!--#content-->
+
+
+       
+
+<script>
+jQuery(document).ready(function($) {
+
+    var imageClicked,
+        allImg,
+        curImg,
+        modalResize;
+
+
+    // centering modal window
+
+    modalResize = function() {
+        $('.modal-content').css({
+            'top': ($(window).height() - $('.modal-content').outerHeight()) / 2,
+            'left': ($(window).width() - $('.modal-content').outerWidth()) / 2
+        });
+
+    };
+    modalResize();
+
+
+    // modal window open
+
+    $(".gallery li").click(function() {
+
+        $(".modal-content, #modal-background").fadeIn();
+
+        $('.modal-content img').attr('src', $(this).find('img').attr('src'));
+
+        imageClicked = $(this);
+
+        modalResize();
+
+
+
+    });
+
+    // modal window close
+
+    $("#modal-background, .modal-close").click(function() {
+
+        $(".modal-content, #modal-background").fadeOut();
+
+
+    });
+
+
+
+    // centering modal window on resize  
+
+    $(window).on('resize', function() {
+
+        modalResize();
+
+    });
+
+
+
+    // "next" button 
+
+
+    $('.btnModal-right').click(function() {
+
+        imageClicked.next().find('img').trigger('click');
+
+
+
+    });
+
+    // "prev" button
+
+    $('.btnModal-left').click(function() {
+        imageClicked.prev().find('img').trigger('click');
+
+
+    });
+
+    // show buttons on hover 
+
+    $('.modal-content').mouseover(function() {
+
+        $(".btnModal-right, .btnModal-left").addClass("btnModal-show");
+
+        curImg = imageClicked.find('img');
+        allImg = imageClicked.closest($('.gallery')).find('img');
+
+        if (curImg.is(allImg.first())) {
+            $(".btnModal-left").removeClass("btnModal-show");
+        } else {
+            $(".btnModal-left").addClass("btnModal-show");
+        }
+
+        if (curImg.is(allImg.last())) {
+            $(".btnModal-right").removeClass("btnModal-show");
+        } else {
+            $(".btnModal-right").addClass("btnModal-show");
+        }
+
+    });
+
+    $('.modal-content').mouseout(function() {
+        $(".btnModal-right, .btnModal-left").removeClass("btnModal-show");
+
+    });
+
+
+});
+</script>
+</body>
+</html>
